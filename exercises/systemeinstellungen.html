@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Systemeinstellungen-Detektor - Dark/Light Mode</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/syntax-highlighting.css">
+    <!-- Prism.js für Syntax-Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-html.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <style>
+        .system-detector {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--card-bg);
+        }
+        
+        .result-container {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--secondary-color);
+            text-align: center;
+        }
+        
+        .result-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        
+        .result-text {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .result-explanation {
+            margin-bottom: 20px;
+        }
+        
+        .code-example {
+            margin-top: 30px;
+        }
+        
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 15px;
+        }
+        
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-weight: 500;
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+        
+        .code-tab.active {
+            opacity: 1;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .code-tab:hover {
+            opacity: 0.9;
+        }
+        
+        .code-panel {
+            display: none;
+        }
+        
+        .code-panel.active {
+            display: block;
+        }
+        
+        .try-it-container {
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--card-bg);
+        }
+        
+        .editor-container {
+            margin-top: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .preview-btn {
+            margin-top: 15px;
+        }
+        
+        .preview-container {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <header>
+        <div class="container">
+            <h1>Systemeinstellungen-Detektor</h1>
+            <div class="theme-switch-wrapper">
+                <label class="theme-switch" for="checkbox">
+                    <input type="checkbox" id="checkbox" />
+                    <span class="slider round"></span>
+                </label>
+                <span id="theme-label">Light Mode</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="introduction">
+            <h2>Erkennung der Systemeinstellungen</h2>
+            <p>
+                Moderne Betriebssysteme und Browser bieten die Möglichkeit, einen bevorzugten Farbmodus (hell oder dunkel) einzustellen.
+                Mit CSS und JavaScript können wir diese Einstellung erkennen und unsere Webseite entsprechend anpassen.
+            </p>
+            <p>
+                Dieser Detektor zeigt dir, welchen Modus dein System aktuell verwendet, und erklärt, wie du diese Information in deinen eigenen Projekten nutzen kannst.
+            </p>
+        </section>
+
+        <section id="system-detector">
+            <div class="system-detector">
+                <h3>Deine Systemeinstellung</h3>
+                
+                <button id="detect-button" class="preview-btn">Systemeinstellung erkennen</button>
+                
+                <div id="result-container" class="result-container" style="display: none;">
+                    <div id="result-icon" class="result-icon">🌙</div>
+                    <div id="result-text" class="result-text">Dark Mode erkannt</div>
+                    <div id="result-explanation" class="result-explanation">
+                        Dein System ist auf den dunklen Modus eingestellt. Webseiten können diese Einstellung erkennen und automatisch ihren Stil anpassen.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="code-example" class="code-example">
+            <h2>Implementierung der Systemerkennung</h2>
+            <p>
+                Es gibt zwei Hauptmethoden, um die Systemeinstellungen zu erkennen: mit CSS und mit JavaScript.
+                Beide Methoden verwenden die <code>prefers-color-scheme</code> Media Query.
+            </p>
+            
+            <div class="code-tabs">
+                <button class="code-tab active" data-target="css-panel">CSS</button>
+                <button class="code-tab" data-target="js-panel">JavaScript</button>
+            </div>
+            
+            <div id="css-panel" class="code-panel active">
+                <pre><code class="language-css">/* CSS-Methode zur Erkennung der Systemeinstellungen */
+:root {
+    /* Light Mode (Standard) */
+    --background-color: #ffffff;
+    --text-color: #333333;
+    --primary-color: #0078d7;
+    /* Weitere Variablen... */
+}
+
+/* Wenn das System auf Dark Mode eingestellt ist */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: #222222;
+        --text-color: #f8f9fa;
+        --primary-color: #4da6ff;
+        /* Weitere Variablen... */
+    }
+}</code></pre>
+                
+                <p>
+                    Mit dieser CSS-Methode werden die Farbvariablen automatisch angepasst, 
+                    wenn das System auf den dunklen Modus eingestellt ist. 
+                    Es ist keine JavaScript-Logik erforderlich.
+                </p>
+            </div>
+            
+            <div id="js-panel" class="code-panel">
+                <pre><code class="language-javascript">// JavaScript-Methode zur Erkennung der Systemeinstellungen
+function detectSystemTheme() {
+    // Prüfe, ob der Browser prefers-color-scheme unterstützt
+    if (window.matchMedia) {
+        // Prüfe, ob das System auf Dark Mode eingestellt ist
+        const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        
+        if (darkModeQuery.matches) {
+            // System verwendet Dark Mode
+            document.documentElement.setAttribute('data-theme', 'dark');
+            return 'dark';
+        } else {
+            // System verwendet Light Mode oder hat keine Präferenz
+            document.documentElement.setAttribute('data-theme', 'light');
+            return 'light';
+        }
+    }
+    
+    // Fallback, wenn Media Queries nicht unterstützt werden
+    return 'light';
+}
+
+// Überwache Änderungen der Systemeinstellungen
+function watchSystemThemeChanges() {
+    if (window.matchMedia) {
+        const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        
+        // Event-Listener für Änderungen der Systemeinstellungen
+        darkModeQuery.addEventListener('change', (e) => {
+            if (e.matches) {
+                // Wechsel zu Dark Mode
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                // Wechsel zu Light Mode
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        });
+    }
+}</code></pre>
+                
+                <p>
+                    Mit der JavaScript-Methode kannst du nicht nur die aktuelle Einstellung erkennen, 
+                    sondern auch auf Änderungen reagieren. Dies ist nützlich, wenn der Benutzer die 
+                    Systemeinstellung ändert, während deine Webseite geöffnet ist.
+                </p>
+            </div>
+        </section>
+
+        <section id="try-it-yourself">
+            <h2>Probiere es selbst aus</h2>
+            <p>
+                Schreibe deinen eigenen Code zur Erkennung der Systemeinstellungen und teste ihn hier:
+            </p>
+            
+            <div class="try-it-container">
+                <div class="editor-container">
+                    <textarea class="code-editor" data-language="javascript" rows="12">// Schreibe hier deinen Code zur Erkennung der Systemeinstellungen
+function detectSystemTheme() {
+    // Prüfe, ob der Browser prefers-color-scheme unterstützt
+    if (window.matchMedia) {
+        // Prüfe, ob das System auf Dark Mode eingestellt ist
+        const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        
+        if (darkModeQuery.matches) {
+            return 'dark';
+        } else {
+            return 'light';
+        }
+    }
+    
+    return 'nicht erkannt';
+}</textarea>
+                </div>
+                
+                <button id="try-button" class="preview-btn">Code testen</button>
+                
+                <div id="try-result" class="preview-container" style="display: none;">
+                    <h4>Ergebnis</h4>
+                    <p>Deine Funktion hat folgende Systemeinstellung erkannt: <strong id="detected-theme">-</strong></p>
+                    <p>Tatsächliche Systemeinstellung: <strong id="actual-theme">-</strong></p>
+                    <div id="feedback-message"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="instructions">
+            <h2>Anleitung zur Verwendung</h2>
+            <h3>Integration in dein Projekt</h3>
+            <p>
+                Um die Systemeinstellungen in deinem eigenen Projekt zu nutzen, hast du zwei Möglichkeiten:
+            </p>
+            
+            <h4>1. Nur CSS (einfach)</h4>
+            <ol>
+                <li>Definiere deine CSS-Variablen für den Light Mode</li>
+                <li>Füge eine Media Query für <code>prefers-color-scheme: dark</code> hinzu</li>
+                <li>Überschreibe die Variablen für den Dark Mode innerhalb der Media Query</li>
+            </ol>
+            
+            <h4>2. CSS und JavaScript (flexibel)</h4>
+            <ol>
+                <li>Definiere deine CSS-Variablen für beide Modi mit <code>data-theme</code>-Attribut</li>
+                <li>Verwende JavaScript, um die Systemeinstellung zu erkennen</li>
+                <li>Setze das <code>data-theme</code>-Attribut entsprechend</li>
+                <li>Füge einen Event-Listener für Änderungen der Systemeinstellung hinzu</li>
+                <li>Optional: Speichere die Benutzereinstellung im localStorage, um sie zu überschreiben</li>
+            </ol>
+            
+            <h3>Vorteile der Systemerkennung</h3>
+            <ul>
+                <li>Bessere Benutzererfahrung durch Anpassung an die Präferenzen des Benutzers</li>
+                <li>Reduzierung der Augenmüdigkeit in dunklen Umgebungen</li>
+                <li>Konsistentes Erscheinungsbild mit anderen Anwendungen auf dem Gerät</li>
+                <li>Mögliche Energieeinsparung auf OLED/AMOLED-Displays</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Dark/Light Mode - Interaktiver Kurs</p>
+            <p class="attribution">Erstellt von Philipp Riegert</p>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+    <script src="../js/syntax-highlighting.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tabs für die Code-Panels
+            document.querySelectorAll('.code-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const target = this.dataset.target;
+                    
+                    // Alle Tabs und Panels deaktivieren
+                    document.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.code-panel').forEach(p => p.classList.remove('active'));
+                    
+                    // Ausgewählten Tab und Panel aktivieren
+                    this.classList.add('active');
+                    document.getElementById(target).classList.add('active');
+                });
+            });
+            
+            // Event-Listener für Erkennungs-Button
+            document.getElementById('detect-button').addEventListener('click', detectSystemTheme);
+            
+            // Event-Listener für Test-Button
+            document.getElementById('try-button').addEventListener('click', testUserCode);
+        });
+        
+        // Funktion zur Erkennung der Systemeinstellungen
+        function detectSystemTheme() {
+            const resultContainer = document.getElementById('result-container');
+            const resultIcon = document.getElementById('result-icon');
+            const resultText = document.getElementById('result-text');
+            const resultExplanation = document.getElementById('result-explanation');
+            
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                // Dark Mode
+                resultIcon.textContent = '🌙';
+                resultText.textContent = 'Dark Mode erkannt';
+                resultExplanation.textContent = 'Dein System ist auf den dunklen Modus eingestellt. Webseiten können diese Einstellung erkennen und automatisch ihren Stil anpassen.';
+            } else {
+                // Light Mode oder keine Präferenz
+                resultIcon.textContent = '☀️';
+                resultText.textContent = 'Light Mode erkannt';
+                resultExplanation.textContent = 'Dein System ist auf den hellen Modus eingestellt oder hat keine spezifische Präferenz. Webseiten können diese Einstellung erkennen und automatisch ihren Stil anpassen.';
+            }
+            
+            resultContainer.style.display = 'block';
+        }
+        
+        // Funktion zum Testen des Benutzercodes
+        function testUserCode() {
+            const codeEditor = document.querySelector('.code-editor');
+            const userCode = codeEditor.value;
+            
+            const tryResult = document.getElementById('try-result');
+            const detectedTheme = document.getElementById('detected-theme');
+            const actualTheme = document.getElementById('actual-theme');
+            const feedbackMessage = document.getElementById('feedback-message');
+            
+            try {
+                // Benutzercode ausführen
+                const detectFunction = new Function(userCode + `
+                    // Funktion ausführen und Ergebnis zurückgeben
+                    return detectSystemTheme();
+                `);
+                
+                // Ergebnis des Benutzercodes
+                const result = detectFunction();
+                detectedTheme.textContent = result;
+                
+                // Tatsächliche Systemeinstellung
+                const actualResult = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                actualTheme.textContent = actualResult;
+                
+                // Feedback
+                if (result === actualResult) {
+                    feedbackMessage.innerHTML = '<p style="color: green; font-weight: bold;">✓ Sehr gut! Dein Code hat die Systemeinstellung korrekt erkannt.</p>';
+                } else {
+                    feedbackMessage.innerHTML = '<p style="color: red; font-weight: bold;">✗ Dein Code hat die Systemeinstellung nicht korrekt erkannt. Überprüfe deinen Code.</p>';
+                }
+                
+            } catch (error) {
+                detectedTheme.textContent = 'Fehler';
+                feedbackMessage.innerHTML = `<p style="color: red; font-weight: bold;">✗ Fehler im Code: ${error.message}</p>`;
+                
+                // Trotzdem die tatsächliche Einstellung anzeigen
+                const actualResult = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                actualTheme.textContent = actualResult;
+            }
+            
+            tryResult.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontrastrechner - Dark/Light Mode</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/syntax-highlighting.css">
+    <!-- Prism.js für Syntax-Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-html.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <style>
+        .contrast-calculator {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--card-bg);
+        }
+        
+        .color-inputs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .color-input-group {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .color-input {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .color-input label {
+            width: 150px;
+            margin-right: 10px;
+        }
+        
+        .color-input input[type="color"] {
+            width: 50px;
+            height: 30px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--background-color);
+        }
+        
+        .color-input input[type="text"] {
+            width: 100px;
+            padding: 5px;
+            margin-left: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        
+        .preview-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .preview-box {
+            flex: 1;
+            min-width: 300px;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .preview-box h3 {
+            margin-top: 0;
+        }
+        
+        .contrast-result {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--card-bg);
+        }
+        
+        .contrast-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .contrast-rating {
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .rating-good {
+            color: #28a745;
+        }
+        
+        .rating-warning {
+            color: #ffc107;
+        }
+        
+        .rating-bad {
+            color: #dc3545;
+        }
+        
+        .wcag-info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+        }
+        
+        .code-example {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <header>
+        <div class="container">
+            <h1>Kontrastrechner</h1>
+            <div class="theme-switch-wrapper">
+                <label class="theme-switch" for="checkbox">
+                    <input type="checkbox" id="checkbox" />
+                    <span class="slider round"></span>
+                </label>
+                <span id="theme-label">Light Mode</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="introduction">
+            <h2>Kontrastrechner für Barrierefreiheit</h2>
+            <p>
+                Mit diesem Tool kannst du den Kontrast zwischen zwei Farben berechnen und prüfen, 
+                ob er den WCAG-Richtlinien für Barrierefreiheit entspricht.
+            </p>
+            <p>
+                Ein ausreichender Kontrast zwischen Text und Hintergrund ist wichtig für die Lesbarkeit, 
+                besonders für Menschen mit Sehbehinderungen.
+            </p>
+        </section>
+
+        <section id="contrast-calculator">
+            <div class="contrast-calculator">
+                <h3>Farben auswählen</h3>
+                
+                <div class="color-inputs">
+                    <div class="color-input-group">
+                        <h4>Vordergrundfarbe (Text)</h4>
+                        <div class="color-input">
+                            <label for="foreground-color">Farbe:</label>
+                            <input type="color" id="foreground-color" value="#000000">
+                            <input type="text" id="foreground-color-text" value="#000000">
+                        </div>
+                    </div>
+                    
+                    <div class="color-input-group">
+                        <h4>Hintergrundfarbe</h4>
+                        <div class="color-input">
+                            <label for="background-color">Farbe:</label>
+                            <input type="color" id="background-color" value="#ffffff">
+                            <input type="text" id="background-color-text" value="#ffffff">
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="calculate-button" class="preview-btn">Kontrast berechnen</button>
+                
+                <div class="preview-area">
+                    <div class="preview-box" id="preview-box">
+                        <h3>Beispieltext</h3>
+                        <p>Dies ist ein Beispieltext zur Demonstration des Kontrasts.</p>
+                        <button>Beispiel-Button</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="contrast-result" class="contrast-result" style="display: none;">
+                <h3>Kontrastergebnis</h3>
+                
+                <div id="contrast-value" class="contrast-value">21:1</div>
+                
+                <div id="contrast-rating" class="contrast-rating rating-good">
+                    Ausgezeichneter Kontrast
+                </div>
+                
+                <div class="wcag-info">
+                    <h4>WCAG 2.1 Richtlinien:</h4>
+                    <ul>
+                        <li><strong>AA-Standard (Minimum):</strong> Kontrastverhältnis von mindestens 4.5:1 für normalen Text</li>
+                        <li><strong>AAA-Standard (Erweitert):</strong> Kontrastverhältnis von mindestens 7:1 für normalen Text</li>
+                        <li><strong>Großer Text (ab 18pt oder 14pt fett):</strong> Niedrigere Anforderungen (3:1 für AA, 4.5:1 für AAA)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="code-example" class="code-example">
+            <h2>Implementierung des Kontrastrechners</h2>
+            <p>
+                Hier ist der JavaScript-Code, der zur Berechnung des Kontrastverhältnisses verwendet wird:
+            </p>
+            
+            <pre><code class="language-javascript">// Funktion zur Berechnung des Kontrastverhältnisses
+function calculateContrastRatio(color1, color2) {
+    // Umwandlung der Hex-Farben in RGB
+    const rgb1 = hexToRgb(color1);
+    const rgb2 = hexToRgb(color2);
+    
+    // Berechnung der relativen Luminanz für beide Farben
+    const luminance1 = calculateLuminance(rgb1);
+    const luminance2 = calculateLuminance(rgb2);
+    
+    // Berechnung des Kontrastverhältnisses
+    const ratio = (Math.max(luminance1, luminance2) + 0.05) / 
+                 (Math.min(luminance1, luminance2) + 0.05);
+    
+    return ratio;
+}
+
+// Funktion zur Umwandlung von Hex in RGB
+function hexToRgb(hex) {
+    // Entferne # am Anfang, falls vorhanden
+    hex = hex.replace(/^#/, '');
+    
+    // Konvertiere 3-stelligen Hex-Code in 6-stelligen
+    if (hex.length === 3) {
+        hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    }
+    
+    // Konvertiere Hex in RGB
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    
+    return { r, g, b };
+}
+
+// Funktion zur Berechnung der relativen Luminanz
+function calculateLuminance(rgb) {
+    // Normalisiere RGB-Werte
+    let r = rgb.r / 255;
+    let g = rgb.g / 255;
+    let b = rgb.b / 255;
+    
+    // Gamma-Korrektur
+    r = r <= 0.03928 ? r / 12.92 : Math.pow((r + 0.055) / 1.055, 2.4);
+    g = g <= 0.03928 ? g / 12.92 : Math.pow((g + 0.055) / 1.055, 2.4);
+    b = b <= 0.03928 ? b / 12.92 : Math.pow((b + 0.055) / 1.055, 2.4);
+    
+    // Berechnung der Luminanz nach WCAG-Formel
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}</code></pre>
+            
+            <p>
+                Diese Funktionen implementieren die WCAG-Formel zur Berechnung des Kontrastverhältnisses.
+                Die Formel berücksichtigt die unterschiedliche Wahrnehmung von Farben durch das menschliche Auge.
+            </p>
+        </section>
+
+        <section id="instructions">
+            <h2>Anleitung zur Verwendung</h2>
+            <ol>
+                <li>Wähle eine Vordergrundfarbe (Textfarbe) aus</li>
+                <li>Wähle eine Hintergrundfarbe aus</li>
+                <li>Klicke auf "Kontrast berechnen"</li>
+                <li>Prüfe das Ergebnis anhand der WCAG-Richtlinien</li>
+                <li>Passe die Farben bei Bedarf an, um einen besseren Kontrast zu erreichen</li>
+            </ol>
+            
+            <h3>Tipps für guten Kontrast</h3>
+            <ul>
+                <li>Verwende dunklen Text auf hellem Hintergrund oder hellen Text auf dunklem Hintergrund</li>
+                <li>Vermeide Farbkombinationen, die für Menschen mit Farbsehschwäche schwer zu unterscheiden sind</li>
+                <li>Teste deine Farbkombinationen mit diesem Tool, bevor du sie in deinem Projekt verwendest</li>
+                <li>Denke daran, dass ein höherer Kontrast die Lesbarkeit verbessert, besonders für Menschen mit Sehbehinderungen</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Dark/Light Mode - Interaktiver Kurs</p>
+            <p class="attribution">Erstellt von Philipp Riegert</p>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Event-Listener für Farbwähler
+            setupColorPickers();
+            
+            // Event-Listener für Berechnungs-Button
+            document.getElementById('calculate-button').addEventListener('click', calculateContrast);
+        });
+        
+        // Funktion zum Einrichten der Farbwähler
+        function setupColorPickers() {
+            // Alle Farbwähler mit ihren Text-Inputs verknüpfen
+            const colorInputs = document.querySelectorAll('input[type="color"]');
+            
+            colorInputs.forEach(input => {
+                const textInput = document.getElementById(input.id + '-text');
+                
+                // Farbwähler ändert Text-Input
+                input.addEventListener('input', function() {
+                    textInput.value = this.value;
+                    updatePreview();
+                });
+                
+                // Text-Input ändert Farbwähler
+                textInput.addEventListener('input', function() {
+                    // Prüfe, ob der Wert ein gültiger Hex-Farbcode ist
+                    if (/^#[0-9A-F]{6}$/i.test(this.value)) {
+                        input.value = this.value;
+                        updatePreview();
+                    }
+                });
+                
+                // Bei Verlassen des Text-Inputs Format korrigieren
+                textInput.addEventListener('blur', function() {
+                    // Wenn kein # am Anfang, hinzufügen
+                    if (this.value.charAt(0) !== '#') {
+                        this.value = '#' + this.value;
+                    }
+                    
+                    // Wenn ungültiger Wert, zurücksetzen
+                    if (!/^#[0-9A-F]{6}$/i.test(this.value)) {
+                        this.value = input.value;
+                    }
+                    
+                    updatePreview();
+                });
+            });
+            
+            // Initiale Vorschau
+            updatePreview();
+        }
+        
+        // Funktion zum Aktualisieren der Vorschau
+        function updatePreview() {
+            const foregroundColor = document.getElementById('foreground-color').value;
+            const backgroundColor = document.getElementById('background-color').value;
+            
+            const previewBox = document.getElementById('preview-box');
+            previewBox.style.color = foregroundColor;
+            previewBox.style.backgroundColor = backgroundColor;
+        }
+        
+        // Funktion zur Berechnung des Kontrasts
+        function calculateContrast() {
+            const foregroundColor = document.getElementById('foreground-color').value;
+            const backgroundColor = document.getElementById('background-color').value;
+            
+            // Berechne Kontrastverhältnis
+            const ratio = calculateContrastRatio(foregroundColor, backgroundColor);
+            const roundedRatio = Math.round(ratio * 100) / 100;
+            
+            // Zeige Ergebnis an
+            document.getElementById('contrast-value').textContent = roundedRatio.toFixed(2) + ':1';
+            
+            // Bewerte Kontrast
+            const contrastRating = document.getElementById('contrast-rating');
+            
+            if (ratio >= 7) {
+                contrastRating.textContent = 'Ausgezeichneter Kontrast (AAA)';
+                contrastRating.className = 'contrast-rating rating-good';
+            } else if (ratio >= 4.5) {
+                contrastRating.textContent = 'Guter Kontrast (AA)';
+                contrastRating.className = 'contrast-rating rating-good';
+            } else if (ratio >= 3) {
+                contrastRating.textContent = 'Ausreichender Kontrast für großen Text (AA)';
+                contrastRating.className = 'contrast-rating rating-warning';
+            } else {
+                contrastRating.textContent = 'Unzureichender Kontrast';
+                contrastRating.className = 'contrast-rating rating-bad';
+            }
+            
+            // Zeige Ergebnis-Container an
+            document.getElementById('contrast-result').style.display = 'block';
+        }
+        
+        // Funktion zur Berechnung des Kontrastverhältnisses
+        function calculateContrastRatio(color1, color2) {
+            // Umwandlung der Hex-Farben in RGB
+            const rgb1 = hexToRgb(color1);
+            const rgb2 = hexToRgb(color2);
+            
+            // Berechnung der relativen Luminanz für beide Farben
+            const luminance1 = calculateLuminance(rgb1);
+            const luminance2 = calculateLuminance(rgb2);
+            
+            // Berechnung des Kontrastverhältnisses
+            const ratio = (Math.max(luminance1, luminance2) + 0.05) / 
+                         (Math.min(luminance1, luminance2) + 0.05);
+            
+            return ratio;
+        }
+        
+        // Funktion zur Umwandlung von Hex in RGB
+        function hexToRgb(hex) {
+            // Entferne # am Anfang, falls vorhanden
+            hex = hex.replace(/^#/, '');
+            
+            // Konvertiere 3-stelligen Hex-Code in 6-stelligen
+            if (hex.length === 3) {
+                hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+            }
+            
+            // Konvertiere Hex in RGB
+            const r = parseInt(hex.substring(0, 2), 16);
+            const g = parseInt(hex.substring(2, 4), 16);
+            const b = parseInt(hex.substring(4, 6), 16);
+            
+            return { r, g, b };
+        }
+        
+        // Funktion zur Berechnung der relativen Luminanz
+        function calculateLuminance(rgb) {
+            // Normalisiere RGB-Werte
+            let r = rgb.r / 255;
+            let g = rgb.g / 255;
+            let b = rgb.b / 255;
+            
+            // Gamma-Korrektur
+            r = r <= 0.03928 ? r / 12.92 : Math.pow((r + 0.055) / 1.055, 2.4);
+            g = g <= 0.03928 ? g / 12.92 : Math.pow((g + 0.055) / 1.055, 2.4);
+            b = b <= 0.03928 ? b / 12.92 : Math.pow((b + 0.055) / 1.055, 2.4);
+            
+            // Berechnung der Luminanz nach WCAG-Formel
+            return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        }
+    </script>
+</body>
+</html>

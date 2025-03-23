@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark/Light Mode - Interaktiver Kurs</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/syntax-highlighting.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Fira+Code:wght@400;500&display=swap">
+    <!-- Prism.js für Syntax-Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-html.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .hero-btn {
+            background-color: white;
+            color: var(--primary-color);
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .feature-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: var(--primary-color);
+        }
+        
+        .code-demo {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+        
+        .code-tab {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-weight: 500;
+            opacity: 0.7;
+        }
+        
+        .code-tab.active {
+            opacity: 1;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .code-panel {
+            display: none;
+        }
+        
+        .code-panel.active {
+            display: block;
+        }
+        
+        .exercise-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .exercise-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .exercise-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .exercise-img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            background-color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+        
+        .cta-section {
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        .cta-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .cta-text {
+            margin-bottom: 1.5rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .resources-section {
+            margin-bottom: 2rem;
+        }
+        
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .resource-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .resource-icon {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-bottom: 0.8rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .feature-grid, .exercise-preview, .resources-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <header>
+        <div class="container">
+            <h1>Dark/Light Mode</h1>
+            <div class="theme-switch-wrapper">
+                <label class="theme-switch" for="checkbox">
+                    <input type="checkbox" id="checkbox" />
+                    <span class="slider round"></span>
+                </label>
+                <span id="theme-label">Light Mode</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">Dark/Light Mode Interaktiver Kurs</h1>
+                <p class="hero-subtitle">Lerne, wie du moderne Webseiten mit Dark und Light Mode erstellst und dabei Benutzerfreundlichkeit und Barrierefreiheit berücksichtigst.</p>
+                <div class="hero-buttons">
+                    <a href="#grundlagen" class="hero-btn">Grundlagen lernen</a>
+                    <a href="#uebungen" class="hero-btn">Übungen starten</a>
+                    <a href="quiz.html" class="hero-btn">Quiz testen</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="grundlagen">
+            <h2>Grundlagen des Dark/Light Mode</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-moon"></i></div>
+                    <h3 class="feature-title">Was ist Dark Mode?</h3>
+                    <p>Der Dark Mode ist eine Darstellungsoption, die helle Texte auf dunklem Hintergrund anzeigt. Er reduziert die Augenbelastung bei schlechten Lichtverhältnissen und kann auf OLED-Displays Akku sparen.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-sun"></i></div>
+                    <h3 class="feature-title">Was ist Light Mode?</h3>
+                    <p>Der Light Mode ist die traditionelle Darstellung mit dunklen Texten auf hellem Hintergrund. Er bietet gute Lesbarkeit bei Tageslicht und entspricht dem klassischen Druckdesign.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-universal-access"></i></div>
+                    <h3 class="feature-title">Barrierefreiheit</h3>
+                    <p>Ein gut implementierter Dark/Light Mode berücksichtigt Barrierefreiheit durch ausreichenden Kontrast zwischen Text und Hintergrund und respektiert die Systemeinstellungen der Benutzer.</p>
+                </div>
+            </div>
+            
+            <div class="code-demo">
+                <h3>Implementierung mit CSS-Variablen</h3>
+                
+                <div class="code-tabs">
+                    <button class="code-tab active" data-target="css-panel">CSS</button>
+                    <button class="code-tab" data-target="html-panel">HTML</button>
+                    <button class="code-tab" data-target="js-panel">JavaScript</button>
+                </div>
+                
+                <div id="css-panel" class="code-panel active">
+                    <pre><code class="language-css">:root {
+    /* Light Mode (Standard) */
+    --background-color: #ffffff;
+    --text-color: #333333;
+    --primary-color: #4361ee;
+    --secondary-color: #f8f9fa;
+    --accent-color: #f72585;
+}
+
+[data-theme="dark"] {
+    /* Dark Mode */
+    --background-color: #121212;
+    --text-color: #e0e0e0;
+    --primary-color: #4cc9f0;
+    --secondary-color: #1e1e1e;
+    --accent-color: #f72585;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}</code></pre>
+                </div>
+                
+                <div id="html-panel" class="code-panel">
+                    <pre><code class="language-html">&lt;!-- Toggle-Switch für Dark/Light Mode -->
+&lt;div class="theme-switch-wrapper">
+    &lt;label class="theme-switch" for="checkbox">
+        &lt;input type="checkbox" id="checkbox" />
+        &lt;span class="slider round">&lt;/span>
+    &lt;/label>
+    &lt;span id="theme-label">Light Mode&lt;/span>
+&lt;/div></code></pre>
+                </div>
+                
+                <div id="js-panel" class="code-panel">
+                    <pre><code class="language-javascript">// Event-Listener für den Toggle-Switch
+document.querySelector('.theme-switch input[type="checkbox"]').addEventListener('change', function() {
+    if (this.checked) {
+        // Zu Dark Mode wechseln
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.getElementById('theme-label').textContent = 'Dark Mode';
+        
+        // Optional: Einstellung speichern
+        localStorage.setItem('theme', 'dark');
+    } else {
+        // Zu Light Mode wechseln
+        document.documentElement.setAttribute('data-theme', 'light');
+        document.getElementById('theme-label').textContent = 'Light Mode';
+        
+        // Optional: Einstellung speichern
+        localStorage.setItem('theme', 'light');
+    }
+});</code></pre>
+                </div>
+            </div>
+            
+            <div class="optional-content">
+                <h3>Systemeinstellungen erkennen <span class="optional-badge">Optional</span></h3>
+                <p>Moderne Webseiten können die Systemeinstellungen des Benutzers erkennen und automatisch den passenden Modus anwenden:</p>
+                
+                <pre><code class="language-javascript">// Systemeinstellungen erkennen
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    // System verwendet Dark Mode
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.querySelector('.theme-switch input[type="checkbox"]').checked = true;
+    document.getElementById('theme-label').textContent = 'Dark Mode';
+}
+
+// Änderungen der Systemeinstellungen überwachen
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    if (e.matches) {
+        // Wechsel zu Dark Mode
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.querySelector('.theme-switch input[type="checkbox"]').checked = true;
+        document.getElementById('theme-label').textContent = 'Dark Mode';
+    } else {
+        // Wechsel zu Light Mode
+        document.documentElement.setAttribute('data-theme', 'light');
+        document.querySelector('.theme-switch input[type="checkbox"]').checked = false;
+        document.getElementById('theme-label').textContent = 'Light Mode';
+    }
+});</code></pre>
+            </div>
+        </section>
+
+        <section id="uebungen">
+            <h2>Interaktive Übungen</h2>
+            
+            <p>Teste dein Wissen und experimentiere mit verschiedenen Aspekten des Dark/Light Mode in diesen interaktiven Übungen:</p>
+            
+            <div class="exercise-preview">
+                <div class="exercise-card">
+                    <div class="exercise-img"><i class="fas fa-palette"></i></div>
+                    <h3>Farbwähler</h3>
+                    <p>Experimentiere mit verschiedenen Farbschemata für Dark und Light Mode und generiere den passenden CSS-Code.</p>
+                    <a href="exercises/farbwaehler.html" class="btn">Übung starten</a>
+                </div>
+                
+                <div class="exercise-card">
+                    <div class="exercise-img"><i class="fas fa-adjust"></i></div>
+                    <h3>Kontrastrechner</h3>
+                    <p>Berechne den Kontrast zwischen Text- und Hintergrundfarben und prüfe die Barrierefreiheit nach WCAG-Richtlinien.</p>
+                    <a href="exercises/kontrastrechner.html" class="btn">Übung starten</a>
+                </div>
+                
+                <div class="exercise-card">
+                    <div class="exercise-img"><i class="fas fa-desktop"></i></div>
+                    <h3>Systemeinstellungen</h3>
+                    <p>Lerne, wie du die Systemeinstellungen des Benutzers erkennen und für deinen Dark/Light Mode nutzen kannst.</p>
+                    <a href="exercises/systemeinstellungen.html" class="btn">Übung starten</a>
+                </div>
+            </div>
+            
+            <div class="cta-section">
+                <h3 class="cta-title">Bereit für eine Herausforderung?</h3>
+                <p class="cta-text">Teste dein Wissen zum Thema Dark/Light Mode mit unserem interaktiven Quiz. Beantworte 10 Fragen und erhalte sofortiges Feedback zu deinen Antworten.</p>
+                <a href="quiz.html" class="btn">Quiz starten</a>
+            </div>
+        </section>
+
+        <section id="best-practices">
+            <h2>Best Practices für Dark/Light Mode</h2>
+            
+            <div class="card">
+                <h3>Farbauswahl</h3>
+                <ul>
+                    <li><strong>Keine reinen Farben:</strong> Vermeide reines Schwarz (#000000) oder reines Weiß (#FFFFFF) für große Flächen.</li>
+                    <li><strong>Satte Farben reduzieren:</strong> Im Dark Mode sollten Farben weniger gesättigt sein, um Blendeffekte zu vermeiden.</li>
+                    <li><strong>Ausreichender Kontrast:</strong> Achte auf ein Kontrastverhältnis von mindestens 4.5:1 zwischen Text und Hintergrund.</li>
+                    <li><strong>Farbhierarchie beibehalten:</strong> Die visuelle Hierarchie sollte in beiden Modi konsistent sein.</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3>Implementierung</h3>
+                <ul>
+                    <li><strong>CSS-Variablen nutzen:</strong> Verwende CSS-Variablen für alle Farben, um sie zentral zu verwalten.</li>
+                    <li><strong>Sanfte Übergänge:</strong> Füge Transitionen hinzu, um den Wechsel zwischen den Modi angenehm zu gestalten.</li>
+                    <li><strong>Systemeinstellungen respektieren:</strong> Berücksichtige die Präferenzen des Benutzers mit <code>prefers-color-scheme</code>.</li>
+                    <li><strong>Benutzereinstellungen speichern:</strong> Speichere die Auswahl des Benutzers im localStorage, um sie bei zukünftigen Besuchen wiederherzustellen.</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3>Barrierefreiheit</h3>
+                <ul>
+                    <li><strong>Kontrast testen:</strong> Überprüfe den Kontrast in beiden Modi mit Tools wie dem Kontrastrechner.</li>
+                    <li><strong>Fokusindikatoren:</strong> Stelle sicher, dass Fokusindikatoren in beiden Modi gut sichtbar sind.</li>
+                    <li><strong>Bilder und Grafiken:</strong> Passe Bilder und Grafiken an den jeweiligen Modus an oder verwende neutrale Versionen.</li>
+                    <li><strong>Text-Schatten vermeiden:</strong> Verzichte auf Text-Schatten, die die Lesbarkeit beeinträchtigen können.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="resources">
+            <h2>Ressourcen und Dokumentation</h2>
+            
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-icon"><i class="fas fa-book"></i></div>
+                    <h3>Anleitungen</h3>
+                    <ul>
+                        <li><a href="pdf/html_css_erklaerung.pdf" target="_blank">HTML/CSS-Erklärung</a></li>
+                        <li><a href="pdf/javascript_erklaerung.pdf" target="_blank">JavaScript-Erklärung</a></li>
+                        <li><a href="pdf/javascript_anleitung.pdf" target="_blank">JavaScript-Anleitung</a></li>
+                    </ul>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-icon"><i class="fas fa-tasks"></i></div>
+                    <h3>Übungen</h3>
+                    <ul>
+                        <li><a href="pdf/praktische_uebungen.pdf" target="_blank">Praktische Übungen</a></li>
+                        <li><a href="exercises/farbwaehler.html">Farbwähler-Tool</a></li>
+                        <li><a href="exercises/kontrastrechner.html">Kontrastrechner</a></li>
+                        <li><a href="visual_comparison.html">Light vs. Dark</a></li>
+                    </ul>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <h3>Lernmaterialien</h3>
+                    <ul>
+                        <li><a href="pdf/glossar.pdf" target="_blank">Glossar</a></li>
+                        <li><a href="pdf/lehrerhandbuch.pdf" target="_blank">Lehrerhandbuch</a></li>
+                        <li><a href="pdf/schuelerarbeitsblatt.pdf" target="_blank">Schülerarbeitsblatt</a></li>
+                    </ul>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-icon"><i class="fas fa-external-link-alt"></i></div>
+                    <h3>Externe Ressourcen</h3>
+                    <ul>
+                        <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark" target="_blank">MDN: light-dark()</a></li>
+                        <li><a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html" target="_blank">WCAG: Kontrast-Richtlinien</a></li>
+                        <li><a href="https://web.dev/prefers-color-scheme/" target="_blank">Web.dev: prefers-color-scheme</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Dark/Light Mode - Interaktiver Kurs</p>
+            <p class="attribution">Erstellt von Philipp Riegert</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Code-Tabs Funktionalität
+        document.querySelectorAll('.code-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const target = this.dataset.target;
+                
+                // Alle Tabs und Panels deaktivieren
+                document.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.code-panel').forEach(p => p.classList.remove('active'));
+                
+                // Ausgewählten Tab und Panel aktivieren
+                this.classList.add('active');
+                document.getElementById(target).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

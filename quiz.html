@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Dark/Light Mode</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/syntax-highlighting.css">
+    <style>
+        .quiz-container {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--card-bg);
+        }
+        
+        .quiz-question {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--background-color);
+        }
+        
+        .quiz-question h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+        
+        .quiz-options {
+            margin: 15px 0;
+        }
+        
+        .quiz-option {
+            margin-bottom: 10px;
+        }
+        
+        .quiz-option label {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        
+        .quiz-explanation {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: var(--secondary-color);
+        }
+        
+        .correct-answer {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .incorrect-answer {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        
+        .unanswered-question {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        
+        .quiz-buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .quiz-result {
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--secondary-color);
+        }
+        
+        .quiz-score {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .quiz-rating {
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .quiz-rating.excellent {
+            color: #28a745;
+        }
+        
+        .quiz-rating.good {
+            color: #17a2b8;
+        }
+        
+        .quiz-rating.average {
+            color: #ffc107;
+        }
+        
+        .quiz-rating.needs-improvement {
+            color: #dc3545;
+        }
+        
+        .quiz-question.correct {
+            border-left: 5px solid #28a745;
+        }
+        
+        .quiz-question.incorrect {
+            border-left: 5px solid #dc3545;
+        }
+        
+        .quiz-question.unanswered {
+            border-left: 5px solid #ffc107;
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <header>
+        <div class="container">
+            <h1>Wissenstest: Dark/Light Mode</h1>
+            <div class="theme-switch-wrapper">
+                <label class="theme-switch" for="checkbox">
+                    <input type="checkbox" id="checkbox" />
+                    <span class="slider round"></span>
+                </label>
+                <span id="theme-label">Light Mode</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="introduction">
+            <h2>Teste dein Wissen zum Thema Dark/Light Mode</h2>
+            <p>
+                Dieser Quiz enthält 10 Fragen zu verschiedenen Aspekten des Dark/Light Mode.
+                Beantworte die Fragen und klicke auf "Auswerten", um dein Ergebnis zu sehen.
+            </p>
+        </section>
+
+        <section id="quiz-container" class="quiz-container">
+            <div id="quiz-questions">
+                <!-- Quiz-Fragen werden per JavaScript eingefügt -->
+            </div>
+            
+            <div class="quiz-buttons">
+                <button id="quiz-submit" class="preview-btn">Auswerten</button>
+                <button id="quiz-reset" class="secondary-btn">Zurücksetzen</button>
+            </div>
+            
+            <div id="quiz-result" class="quiz-result" style="display: none;">
+                <!-- Ergebnis wird per JavaScript eingefügt -->
+            </div>
+        </section>
+
+        <section id="quiz-info">
+            <h2>Über diesen Quiz</h2>
+            <p>
+                Dieser Quiz deckt die wichtigsten Konzepte und Techniken zum Thema Dark/Light Mode ab:
+            </p>
+            <ul>
+                <li>Vorteile und Nachteile des Dark Mode</li>
+                <li>CSS-Techniken zur Implementierung</li>
+                <li>JavaScript-Funktionalität für den Modiwechsel</li>
+                <li>Erkennung von Systemeinstellungen</li>
+                <li>Barrierefreiheit und Kontrast</li>
+                <li>Benutzerfreundlichkeit und Best Practices</li>
+            </ul>
+            <p>
+                Der Quiz dient zur Selbstüberprüfung und hilft dir, dein Verständnis des Themas zu testen.
+                Nach der Auswertung erhältst du Erklärungen zu jeder Frage, um dein Wissen zu vertiefen.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Dark/Light Mode - Interaktiver Kurs</p>
+            <p class="attribution">Erstellt von Philipp Riegert</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/quiz.js"></script>
+</body>
+</html>

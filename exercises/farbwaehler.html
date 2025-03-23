@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farbwähler-Tool - Dark/Light Mode</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/syntax-highlighting.css">
+    <!-- Prism.js für Syntax-Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-html.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <style>
+        .color-picker-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .color-picker {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--card-bg);
+        }
+        
+        .color-input {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .color-input label {
+            width: 150px;
+            margin-right: 10px;
+        }
+        
+        .color-input input[type="color"] {
+            width: 50px;
+            height: 30px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--background-color);
+        }
+        
+        .color-input input[type="text"] {
+            width: 100px;
+            padding: 5px;
+            margin-left: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        
+        .preview-area {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+        
+        .preview-light, .preview-dark {
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .preview-light {
+            background-color: #ffffff;
+            color: #333333;
+        }
+        
+        .preview-dark {
+            background-color: #222222;
+            color: #f8f9fa;
+        }
+        
+        .preview-button {
+            background-color: #0078d7;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .preview-card {
+            background-color: #f5f5f5;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .dark .preview-card {
+            background-color: #333333;
+            border-color: #555555;
+        }
+        
+        .css-output {
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--card-bg);
+        }
+        
+        .copy-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .copy-button:hover {
+            background-color: var(--btn-hover);
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <header>
+        <div class="container">
+            <h1>Farbwähler-Tool</h1>
+            <div class="theme-switch-wrapper">
+                <label class="theme-switch" for="checkbox">
+                    <input type="checkbox" id="checkbox" />
+                    <span class="slider round"></span>
+                </label>
+                <span id="theme-label">Light Mode</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="introduction">
+            <h2>Farbwähler für Dark/Light Mode</h2>
+            <p>
+                Mit diesem Tool kannst du Farbschemata für deinen Dark und Light Mode erstellen und testen.
+                Wähle die Farben für beide Modi aus und sieh dir eine Vorschau an.
+            </p>
+        </section>
+
+        <section id="color-picker">
+            <div class="color-picker-container">
+                <div class="color-picker">
+                    <h3>Light Mode Farben</h3>
+                    
+                    <div class="color-input">
+                        <label for="light-bg">Hintergrundfarbe:</label>
+                        <input type="color" id="light-bg" value="#ffffff">
+                        <input type="text" id="light-bg-text" value="#ffffff">
+                    </div>
+                    
+                    <div class="color-input">
+                        <label for="light-text">Textfarbe:</label>
+                        <input type="color" id="light-text" value="#333333">
+                        <input type="text" id="light-text-text" value="#333333">
+                    </div>
+                    
+                    <div class="color-input">
+                        <label for="light-primary">Primärfarbe:</label>
+                        <input type="color" id="light-primary" value="#0078d7">
+                        <input type="text" id="light-primary-text" value="#0078d7">
+                    </div>
+                    
+                    <div class="color-input">
+                        <label for="light-secondary">Sekundärfarbe:</label>
+                        <input type="color" id="light-secondary" value="#f5f5f5">
+                        <input type="text" id="light-secondary-text" value="#f5f5f5">
+                    </div>
+                    
+                    <div class="color-input">
+                        <label for="light-accent">Akzentfarbe:</label>
+                        <input type="color" id="light-accent" value="#ff9e1b">
+                        <input type="text" id="light-accent-text" value="#ff9e1b">
+                    </div>
+                </div>
+                
+                <div class="color-picker">
+                    <h3>Dark Mode Farben</h3>
+                    
+                    <div class="color-input">
+                        <label for="dark-bg">Hintergrundfarbe:</label>
+                        <input type="color" id="dark-bg" value="#222222">
+                        <input type="text" id="dark-bg-text" value="#222222">
+                    </div>
+                    
+                    <div class="color-input">
+                        <label for="dark-text">Textfarbe:</label>
+                        <input type="color" id="dark-text" value="#f8f9fa">
+                        <input type="text" id="dark-text-text" value="#f8f9fa">
+                    </div>
+                    
+                    <div class="color-input">
+                        <label for="dark-primary">Primärfarbe:</label>
+                        <input type="color" id="dark-primary" value="#4da6ff">
+                        <input type="text" id="dark-primary-text" value="#4da6ff">
+                    </div>
+                    
+                    <div class="color-input">
+                        <label for="dark-secondary">Sekundärfarbe:</label>
+                        <input type="color" id="dark-secondary" value="#444444">
+                        <input type="text" id="dark-secondary-text" value="#444444">
+                    </div>
+                    
+                    <div class="color-input">
+                        <label for="dark-accent">Akzentfarbe:</label>
+                        <input type="color" id="dark-accent" value="#ff9642">
+                        <input type="text" id="dark-accent-text" value="#ff9642">
+                    </div>
+                </div>
+            </div>
+            
+            <button id="preview-button" class="preview-btn">Vorschau anzeigen</button>
+            
+            <div id="preview-container" class="preview-container" style="display: none;">
+                <h3>Vorschau</h3>
+                
+                <div class="preview-area">
+                    <div class="preview-light">
+                        <h4>Light Mode</h4>
+                        <p>Dies ist ein Beispieltext im Light Mode.</p>
+                        <button class="preview-button">Button</button>
+                        <div class="preview-card">
+                            <h5>Beispiel-Karte</h5>
+                            <p>Dies ist eine Beispiel-Karte im Light Mode.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-dark">
+                        <h4>Dark Mode</h4>
+                        <p>Dies ist ein Beispieltext im Dark Mode.</p>
+                        <button class="preview-button">Button</button>
+                        <div class="preview-card">
+                            <h5>Beispiel-Karte</h5>
+                            <p>Dies ist eine Beispiel-Karte im Dark Mode.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="css-output" class="css-output" style="display: none;">
+                <h3>CSS-Code</h3>
+                <pre><code class="language-css" id="css-code">:root {
+    /* Light Mode (Standard) */
+    --background-color: #ffffff;
+    --text-color: #333333;
+    --primary-color: #0078d7;
+    --secondary-color: #f5f5f5;
+    --accent-color: #ff9e1b;
+}
+
+[data-theme="dark"] {
+    /* Dark Mode */
+    --background-color: #222222;
+    --text-color: #f8f9fa;
+    --primary-color: #4da6ff;
+    --secondary-color: #444444;
+    --accent-color: #ff9642;
+}</code></pre>
+                <button id="copy-button" class="copy-button">CSS-Code kopieren</button>
+            </div>
+        </section>
+
+        <section id="instructions">
+            <h2>Anleitung</h2>
+            <ol>
+                <li>Wähle die Farben für den Light Mode aus</li>
+                <li>Wähle die Farben für den Dark Mode aus</li>
+                <li>Klicke auf "Vorschau anzeigen", um die Farben zu testen</li>
+                <li>Kopiere den generierten CSS-Code für dein Projekt</li>
+            </ol>
+            
+            <h3>Tipps für gute Farbschemata</h3>
+            <ul>
+                <li>Achte auf ausreichenden Kontrast zwischen Hintergrund- und Textfarbe (mindestens 4.5:1)</li>
+                <li>Verwende keine reinen Farben (#000000 oder #FFFFFF) für große Flächen</li>
+                <li>Wähle für den Dark Mode etwas hellere Primär- und Akzentfarben</li>
+                <li>Teste dein Farbschema auf Barrierefreiheit</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Dark/Light Mode - Interaktiver Kurs</p>
+            <p class="attribution">Erstellt von Philipp Riegert</p>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Event-Listener für Farbwähler
+            setupColorPickers();
+            
+            // Event-Listener für Vorschau-Button
+            document.getElementById('preview-button').addEventListener('click', updatePreview);
+            
+            // Event-Listener für Kopier-Button
+            document.getElementById('copy-button').addEventListener('click', copyCSS);
+        });
+        
+        // Funktion zum Einrichten der Farbwähler
+        function setupColorPickers() {
+            // Alle Farbwähler mit ihren Text-Inputs verknüpfen
+            const colorInputs = document.querySelectorAll('input[type="color"]');
+            
+            colorInputs.forEach(input => {
+                const textInput = document.getElementById(input.id + '-text');
+                
+                // Farbwähler ändert Text-Input
+                input.addEventListener('input', function() {
+                    textInput.value = this.value;
+                });
+                
+                // Text-Input ändert Farbwähler
+                textInput.addEventListener('input', function() {
+                    // Prüfe, ob der Wert ein gültiger Hex-Farbcode ist
+                    if (/^#[0-9A-F]{6}$/i.test(this.value)) {
+                        input.value = this.value;
+                    }
+                });
+                
+                // Bei Verlassen des Text-Inputs Format korrigieren
+                textInput.addEventListener('blur', function() {
+                    // Wenn kein # am Anfang, hinzufügen
+                    if (this.value.charAt(0) !== '#') {
+                        this.value = '#' + this.value;
+                    }
+                    
+                    // Wenn ungültiger Wert, zurücksetzen
+                    if (!/^#[0-9A-F]{6}$/i.test(this.value)) {
+                        this.value = input.value;
+                    }
+                });
+            });
+        }
+        
+        // Funktion zum Aktualisieren der Vorschau
+        function updatePreview() {
+            // Farben aus den Inputs holen
+            const lightBg = document.getElementById('light-bg').value;
+            const lightText = document.getElementById('light-text').value;
+            const lightPrimary = document.getElementById('light-primary').value;
+            const lightSecondary = document.getElementById('light-secondary').value;
+            const lightAccent = document.getElementById('light-accent').value;
+            
+            const darkBg = document.getElementById('dark-bg').value;
+            const darkText = document.getElementById('dark-text').value;
+            const darkPrimary = document.getElementById('dark-primary').value;
+            const darkSecondary = document.getElementById('dark-secondary').value;
+            const darkAccent = document.getElementById('dark-accent').value;
+            
+            // Vorschau für Light Mode aktualisieren
+            const lightPreview = document.querySelector('.preview-light');
+            lightPreview.style.backgroundColor = lightBg;
+            lightPreview.style.color = lightText;
+            
+            const lightButton = lightPreview.querySelector('.preview-button');
+            lightButton.style.backgroundColor = lightPrimary;
+            
+            const lightCard = lightPreview.querySelector('.preview-card');
+            lightCard.style.backgroundColor = lightSecondary;
+            lightCard.style.borderColor = lightText + '33'; // Mit Transparenz
+            
+            // Vorschau für Dark Mode aktualisieren
+            const darkPreview = document.querySelector('.preview-dark');
+            darkPreview.style.backgroundColor = darkBg;
+            darkPreview.style.color = darkText;
+            
+            const darkButton = darkPreview.querySelector('.preview-button');
+            darkButton.style.backgroundColor = darkPrimary;
+            
+            const darkCard = darkPreview.querySelector('.preview-card');
+            darkCard.style.backgroundColor = darkSecondary;
+            darkCard.style.borderColor = darkText + '33'; // Mit Transparenz
+            
+            // CSS-Code aktualisieren
+            const cssCode = `:root {
+    /* Light Mode (Standard) */
+    --background-color: ${lightBg};
+    --text-color: ${lightText};
+    --primary-color: ${lightPrimary};
+    --secondary-color: ${lightSecondary};
+    --accent-color: ${lightAccent};
+}
+
+[data-theme="dark"] {
+    /* Dark Mode */
+    --background-color: ${darkBg};
+    --text-color: ${darkText};
+    --primary-color: ${darkPrimary};
+    --secondary-color: ${darkSecondary};
+    --accent-color: ${darkAccent};
+}`;
+            
+            document.getElementById('css-code').textContent = cssCode;
+            Prism.highlightElement(document.getElementById('css-code'));
+            
+            // Vorschau und CSS-Output anzeigen
+            document.getElementById('preview-container').style.display = 'block';
+            document.getElementById('css-output').style.display = 'block';
+        }
+        
+        // Funktion zum Kopieren des CSS-Codes
+        function copyCSS() {
+            const cssCode = document.getElementById('css-code').textContent;
+            
+            // In die Zwischenablage kopieren
+            navigator.clipboard.writeText(cssCode).then(function() {
+                // Erfolgsrückmeldung
+                const button = document.getElementById('copy-button');
+                const originalText = button.textContent;
+                button.textContent = 'Kopiert!';
+                
+                // Nach 2 Sekunden zurücksetzen
+                setTimeout(function() {
+                    button.textContent = originalText;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
